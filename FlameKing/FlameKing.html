@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="FlameKing Burgers – Flame-grilled perfection since 1985. Order fresh, never frozen burgers online with fast delivery.">
+<meta name="theme-color" content="#D93025">
+<title>FlameKing – Flame-Grilled Perfection</title>
+
+<!-- Schema Markup -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "FlameKing Burgers",
+  "description": "Premium flame-grilled burgers made fresh to order",
+  "servesCuisine": "American",
+  "priceRange": "$$",
+  "address": {"@type": "PostalAddress", "streetAddress": "123 King Street", "addressLocality": "New York", "addressRegion": "NY"},
+  "openingHours": "Mo-Su 10:00-23:00",
+  "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.8", "reviewCount": "12480"}
+}
+</script>
+
+<style>
+/* ── DESIGN TOKENS ──────────────────────────────────────────────── */
+:root {
+  --flame:   #E8340A;
+  --flame-d: #B5280A;
+  --gold:    #F5A623;
+  --char:    #1A1008;
+  --smoke:   #2D2416;
+  --cream:   #FFF8F0;
+  --ash:     #6B5B4E;
+  --white:   #FFFFFF;
+
+  --r-sm: 8px;
+  --r-md: 16px;
+  --r-lg: 28px;
+  --r-xl: 48px;
+
+  --shadow-card: 0 4px 24px rgba(26,16,8,0.12);
+  --shadow-lift: 0 12px 40px rgba(26,16,8,0.22);
+
+  --font-display: 'Bebas Neue', 'Impact', sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── RESET & BASE ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--char);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+ul { list-style: none; }
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ── UTILITY ────────────────────────────────────────────────────── */
+.container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+.sr-only { position: absolute; width: 1px; height: 1px; clip: rect(0,0,0,0); overflow: hidden; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 28px; border-radius: var(--r-xl);
+  font-weight: 700; font-size: 15px; letter-spacing: 0.3px;
+  transition: transform 0.2s var(--ease-spring), box-shadow 0.2s ease, background 0.15s ease;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); }
+.btn-flame {
+  background: var(--flame); color: var(--white);
+  box-shadow: 0 4px 20px rgba(232,52,10,0.4);
+}
+.btn-flame:hover { background: var(--flame-d); box-shadow: 0 8px 28px rgba(232,52,10,0.5); }
+.btn-ghost {
+  background: rgba(255,255,255,0.15); color: var(--white);
+  border: 2px solid rgba(255,255,255,0.5); backdrop-filter: blur(8px);
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.25); border-color: white; }
+.btn-outline {
+  background: transparent; color: var(--flame);
+  border: 2px solid var(--flame);
+}
+.btn-outline:hover { background: var(--flame); color: var(--white); }
+
+.badge {
+  display: inline-block; padding: 4px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase;
+}
+.badge-hot { background: var(--flame); color: white; }
+.badge-new { background: var(--gold); color: var(--char); }
+.badge-sale { background: #16A34A; color: white; }
+
+.section-label {
+  font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--flame); margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--font-display); font-size: clamp(36px, 5vw, 64px);
+  line-height: 0.95; color: var(--char); margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+.section-sub { color: var(--ash); font-size: 17px; max-width: 560px; }
+
+/* ── NAVBAR ─────────────────────────────────────────────────────── */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  padding: 0 24px;
+  transition: background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+}
+#navbar.scrolled {
+  background: rgba(26,16,8,0.96);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  padding: 0 24px;
+}
+.nav-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 72px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo-icon {
+  width: 44px; height: 44px; background: var(--flame);
+  border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  font-size: 24px; transition: transform 0.2s var(--ease-spring);
+}
+.nav-logo:hover .nav-logo-icon { transform: rotate(-5deg) scale(1.05); }
+.nav-logo-text {
+  font-family: var(--font-display); font-size: 26px; color: white; letter-spacing: 1px;
+}
+.nav-logo-text span { color: var(--gold); }
+
+.nav-links {
+  display: flex; align-items: center; gap: 32px;
+}
+.nav-links a {
+  color: rgba(255,255,255,0.8); font-size: 14px; font-weight: 600;
+  transition: color 0.15s; position: relative; letter-spacing: 0.3px;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+  height: 2px; background: var(--gold); transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+.nav-links a:hover { color: white; }
+.nav-links a:hover::after { transform: scaleX(1); }
+
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+.cart-btn {
+  position: relative; width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(255,255,255,0.1); color: white; font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.cart-btn:hover { background: rgba(255,255,255,0.2); }
+.cart-count {
+  position: absolute; top: -4px; right: -4px;
+  width: 18px; height: 18px; border-radius: 50%; background: var(--flame);
+  color: white; font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.hamburger {
+  display: none; flex-direction: column; gap: 5px;
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(255,255,255,0.1); align-items: center; justify-content: center;
+}
+.hamburger span {
+  display: block; width: 20px; height: 2px; background: white;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* ── MOBILE MENU ────────────────────────────────────────────────── */
+.mobile-menu {
+  display: none; position: fixed; inset: 0; z-index: 999;
+  background: var(--char); flex-direction: column; align-items: center; justify-content: center;
+  gap: 32px; transition: opacity 0.3s ease;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  font-family: var(--font-display); font-size: 42px; color: white; letter-spacing: 2px;
+  transition: color 0.15s;
+}
+.mobile-menu a:hover { color: var(--gold); }
+.mobile-menu-close {
+  position: absolute; top: 20px; right: 24px;
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(255,255,255,0.1); color: white; font-size: 20px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ── HERO ───────────────────────────────────────────────────────── */
+#hero {
+  min-height: 100svh; position: relative; overflow: hidden;
+  display: flex; align-items: center;
+  background: var(--char);
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1920&q=80') center/cover no-repeat;
+  opacity: 0.35; transform: scale(1.05);
+  animation: heroZoom 12s ease-in-out infinite alternate;
+}
+@keyframes heroZoom {
+  from { transform: scale(1.05); }
+  to   { transform: scale(1.12); }
+}
+.hero-gradient {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(26,16,8,0.95) 0%, rgba(26,16,8,0.6) 60%, rgba(245,166,35,0.1) 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 1280px; margin: 0 auto; padding: 120px 24px 80px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+}
+.hero-text { max-width: 580px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 16px; border-radius: 100px;
+  background: rgba(245,166,35,0.15); border: 1px solid rgba(245,166,35,0.3);
+  color: var(--gold); font-size: 13px; font-weight: 600; margin-bottom: 24px;
+  animation: fadeSlideUp 0.6s var(--ease-out) both;
+}
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: clamp(64px, 8vw, 108px);
+  line-height: 0.9; color: white; margin-bottom: 8px;
+  animation: fadeSlideUp 0.6s var(--ease-out) 0.1s both;
+}
+.hero-headline .flame-word { color: var(--gold); }
+.hero-sub {
+  font-size: 18px; color: rgba(255,255,255,0.7); margin-bottom: 36px; max-width: 440px;
+  animation: fadeSlideUp 0.6s var(--ease-out) 0.2s both;
+}
+.hero-actions {
+  display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px;
+  animation: fadeSlideUp 0.6s var(--ease-out) 0.3s both;
+}
+.hero-trust {
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+  animation: fadeSlideUp 0.6s var(--ease-out) 0.4s both;
+}
+.trust-item {
+  display: flex; align-items: center; gap: 8px;
+  color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500;
+}
+.trust-stars { color: var(--gold); font-size: 16px; letter-spacing: 1px; }
+.trust-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.2); }
+
+.hero-visual {
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeSlideRight 0.8s var(--ease-out) 0.3s both;
+}
+.hero-burger-card {
+  position: relative; width: 380px; height: 380px;
+}
+.hero-burger-ring {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: conic-gradient(from 180deg, rgba(232,52,10,0.4), rgba(245,166,35,0.3), rgba(232,52,10,0.4));
+  animation: spin 8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.hero-burger-img {
+  position: absolute; inset: 16px; border-radius: 50%; overflow: hidden;
+  background: url('https://images.unsplash.com/photo-1586816001966-79b736744398?w=600&q=80') center/cover;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 0 40px rgba(232,52,10,0.2);
+}
+.hero-price-badge {
+  position: absolute; bottom: 20px; right: -10px;
+  background: var(--flame); color: white; border-radius: var(--r-md);
+  padding: 12px 16px; text-align: center;
+  box-shadow: 0 8px 24px rgba(232,52,10,0.4);
+  animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+.hero-price-badge .price { font-family: var(--font-display); font-size: 28px; }
+.hero-price-badge .price-label { font-size: 11px; opacity: 0.8; letter-spacing: 1px; }
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeSlideRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── TICKER ─────────────────────────────────────────────────────── */
+.ticker-bar {
+  background: var(--flame); color: white; padding: 10px 0; overflow: hidden;
+}
+.ticker-track {
+  display: flex; gap: 60px; width: max-content;
+  animation: ticker 25s linear infinite;
+}
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.ticker-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  white-space: nowrap;
+}
+.ticker-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+/* ── FEATURED PRODUCTS ──────────────────────────────────────────── */
+#featured { padding: 96px 0; }
+.section-header { margin-bottom: 56px; }
+.products-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+}
+.product-card {
+  background: white; border-radius: var(--r-lg); overflow: hidden;
+  box-shadow: var(--shadow-card); transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+  cursor: pointer; position: relative;
+}
+.product-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lift); }
+.product-card-img {
+  height: 200px; overflow: hidden; position: relative;
+}
+.product-card-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.4s var(--ease-out);
+}
+.product-card:hover .product-card-img img { transform: scale(1.08); }
+.product-badges {
+  position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; flex-wrap: wrap;
+}
+.product-fav {
+  position: absolute; top: 12px; right: 12px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,0.9); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; transition: transform 0.2s var(--ease-spring);
+  color: #ccc;
+}
+.product-fav:hover { transform: scale(1.15); color: var(--flame); }
+.product-fav.active { color: var(--flame); }
+.product-body { padding: 20px; }
+.product-name { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+.product-desc { color: var(--ash); font-size: 13px; margin-bottom: 16px; line-height: 1.5; }
+.product-footer { display: flex; align-items: center; justify-content: space-between; }
+.product-price { font-weight: 800; font-size: 20px; color: var(--char); }
+.product-price .old { font-size: 13px; color: var(--ash); text-decoration: line-through; font-weight: 400; margin-right: 4px; }
+.add-btn {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: var(--flame); color: white; font-size: 22px; font-weight: 300;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.2s var(--ease-spring), background 0.15s;
+  box-shadow: 0 4px 12px rgba(232,52,10,0.35);
+}
+.add-btn:hover { transform: scale(1.1) rotate(90deg); background: var(--flame-d); }
+
+/* ── LIMITED OFFERS ─────────────────────────────────────────────── */
+#offers { padding: 0 0 96px; }
+.offers-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 24px; }
+.offer-card {
+  border-radius: var(--r-lg); overflow: hidden; position: relative;
+  min-height: 280px; display: flex; flex-direction: column; justify-content: flex-end;
+  cursor: pointer; box-shadow: var(--shadow-card);
+}
+.offer-card-bg {
+  position: absolute; inset: 0; object-fit: cover; width: 100%; height: 100%;
+  transition: transform 0.5s var(--ease-out);
+}
+.offer-card:hover .offer-card-bg { transform: scale(1.06); }
+.offer-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,16,8,0.9) 0%, rgba(26,16,8,0.1) 60%);
+}
+.offer-card-body {
+  position: relative; z-index: 1; padding: 24px;
+}
+.offer-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+.offer-title { font-family: var(--font-display); font-size: 30px; color: white; margin-bottom: 8px; line-height: 1; }
+.offer-desc { color: rgba(255,255,255,0.75); font-size: 13px; margin-bottom: 16px; }
+.offer-timer {
+  display: flex; gap: 8px; margin-bottom: 16px;
+}
+.timer-unit {
+  background: rgba(255,255,255,0.15); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2); border-radius: 8px;
+  padding: 8px 10px; text-align: center; min-width: 50px;
+}
+.timer-num { font-family: var(--font-display); font-size: 24px; color: white; line-height: 1; }
+.timer-lbl { font-size: 9px; color: rgba(255,255,255,0.6); letter-spacing: 1px; text-transform: uppercase; }
+
+/* ── WHY CHOOSE US ──────────────────────────────────────────────── */
+#why {
+  padding: 96px 0; position: relative;
+  background: var(--char);
+}
+#why::before {
+  content: ''; position: absolute; inset: 0;
+  background: url('https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=1920&q=80') center/cover no-repeat;
+  opacity: 0.06;
+}
+.why-inner { position: relative; z-index: 1; }
+.why-header { color: white; margin-bottom: 60px; }
+.why-header .section-title { color: white; }
+.why-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+.why-card {
+  padding: 32px 24px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--r-lg); text-align: center;
+  transition: background 0.3s ease, transform 0.3s var(--ease-spring), border-color 0.3s;
+}
+.why-card:hover {
+  background: rgba(232,52,10,0.1);
+  border-color: rgba(232,52,10,0.3);
+  transform: translateY(-4px);
+}
+.why-icon {
+  font-size: 40px; margin-bottom: 16px;
+  filter: drop-shadow(0 0 12px rgba(245,166,35,0.4));
+}
+.why-title { font-weight: 700; font-size: 16px; color: white; margin-bottom: 8px; }
+.why-text { color: rgba(255,255,255,0.55); font-size: 13px; line-height: 1.6; }
+
+/* ── INTERACTIVE MENU ───────────────────────────────────────────── */
+#menu { padding: 96px 0; }
+.menu-controls {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px; margin-bottom: 40px;
+}
+.menu-cats { display: flex; gap: 8px; flex-wrap: wrap; }
+.cat-btn {
+  padding: 10px 20px; border-radius: 100px; font-size: 13px; font-weight: 600;
+  background: white; border: 2px solid #E8E0D8;
+  color: var(--ash); cursor: pointer;
+  transition: all 0.2s ease;
+}
+.cat-btn.active, .cat-btn:hover {
+  background: var(--flame); border-color: var(--flame); color: white;
+}
+.menu-search {
+  position: relative;
+}
+.menu-search input {
+  padding: 10px 16px 10px 40px; border-radius: 100px;
+  border: 2px solid #E8E0D8; background: white; font-size: 14px;
+  font-family: var(--font-body); outline: none; width: 240px;
+  transition: border-color 0.2s;
+}
+.menu-search input:focus { border-color: var(--flame); }
+.menu-search-icon {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--ash); font-size: 16px; pointer-events: none;
+}
+.menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.menu-item {
+  display: flex; gap: 16px; background: white; border-radius: var(--r-md);
+  padding: 16px; box-shadow: var(--shadow-card);
+  transition: transform 0.2s var(--ease-spring), box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.menu-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
+.menu-item-img {
+  width: 90px; height: 90px; border-radius: 12px; object-fit: cover; flex-shrink: 0;
+}
+.menu-item-info { flex: 1; }
+.menu-item-name { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+.menu-item-desc { color: var(--ash); font-size: 12px; margin-bottom: 8px; }
+.menu-item-meta { display: flex; align-items: center; justify-content: space-between; }
+.menu-item-price { font-weight: 800; color: var(--flame); }
+.menu-item-cals { font-size: 11px; color: var(--ash); }
+.menu-item-add {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--flame); color: white; font-size: 18px;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.2s var(--ease-spring);
+}
+.menu-item-add:hover { transform: scale(1.12) rotate(90deg); }
+
+/* ── REVIEWS ────────────────────────────────────────────────────── */
+#reviews {
+  padding: 96px 0;
+  background: linear-gradient(135deg, #FFF5EC 0%, #FFF8F0 100%);
+}
+.reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 48px; }
+.review-card {
+  background: white; border-radius: var(--r-lg); padding: 28px;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s var(--ease-spring);
+}
+.review-card:hover { transform: translateY(-4px); }
+.review-stars { color: var(--gold); font-size: 18px; letter-spacing: 2px; margin-bottom: 16px; }
+.review-text {
+  color: var(--ash); font-size: 15px; line-height: 1.7;
+  margin-bottom: 20px; font-style: italic;
+}
+.review-text::before { content: '\201C'; font-size: 40px; color: var(--flame); opacity: 0.3; line-height: 0; vertical-align: -16px; margin-right: 4px; }
+.review-footer { display: flex; align-items: center; gap: 12px; }
+.review-avatar {
+  width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
+  border: 2px solid var(--cream);
+}
+.review-name { font-weight: 700; font-size: 15px; }
+.review-date { font-size: 12px; color: var(--ash); }
+.review-verified { display: flex; align-items: center; gap: 4px; font-size: 11px; color: #16A34A; font-weight: 600; }
+
+.social-proof {
+  display: flex; align-items: center; gap: 32px; margin-top: 48px;
+  padding: 28px 36px; background: white; border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card); flex-wrap: wrap; justify-content: center;
+}
+.proof-item { text-align: center; }
+.proof-num { font-family: var(--font-display); font-size: 40px; color: var(--flame); line-height: 1; }
+.proof-label { font-size: 13px; color: var(--ash); font-weight: 500; }
+.proof-divider { width: 1px; height: 48px; background: #E8E0D8; }
+
+/* ── APP PROMO ──────────────────────────────────────────────────── */
+#app {
+  padding: 96px 0; background: var(--smoke);
+  position: relative; overflow: hidden;
+}
+#app::before {
+  content: ''; position: absolute; top: -80px; right: -80px;
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,52,10,0.15) 0%, transparent 70%);
+}
+.app-inner {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  position: relative; z-index: 1;
+}
+.app-text { color: white; }
+.app-text .section-label { color: var(--gold); }
+.app-text .section-title { color: white; }
+.app-text .section-sub { color: rgba(255,255,255,0.6); margin-bottom: 32px; }
+.app-perks { display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px; }
+.app-perk {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 16px; border-radius: var(--r-md);
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+}
+.app-perk-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: rgba(232,52,10,0.2); color: var(--flame);
+  display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+}
+.app-perk-title { font-weight: 700; color: white; font-size: 15px; }
+.app-perk-desc { color: rgba(255,255,255,0.55); font-size: 13px; }
+.app-downloads { display: flex; gap: 12px; flex-wrap: wrap; }
+.store-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 20px; border-radius: var(--r-md);
+  background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+  color: white; font-weight: 600; font-size: 14px;
+  transition: background 0.2s, transform 0.2s var(--ease-spring);
+}
+.store-btn:hover { background: rgba(255,255,255,0.18); transform: translateY(-2px); }
+.store-icon { font-size: 22px; }
+.app-phones {
+  display: flex; justify-content: center; align-items: flex-end; gap: -20px;
+}
+.phone-mockup {
+  width: 220px; position: relative;
+}
+.phone-frame {
+  width: 220px; height: 440px; border-radius: 36px;
+  background: #111; border: 3px solid #333;
+  overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+}
+.phone-screen {
+  width: 100%; height: 100%; object-fit: cover;
+}
+
+/* ── STORE LOCATOR ──────────────────────────────────────────────── */
+#locator { padding: 96px 0; }
+.locator-inner { display: grid; grid-template-columns: 1fr 1.2fr; gap: 48px; align-items: start; }
+.locator-map {
+  border-radius: var(--r-lg); overflow: hidden;
+  height: 440px; background: #E8E0D8;
+  position: relative; box-shadow: var(--shadow-card);
+  background: url('https://images.unsplash.com/photo-1569336415962-a4bd9f69c5f7?w=800&q=80') center/cover;
+}
+.map-overlay {
+  position: absolute; inset: 0;
+  background: rgba(26,16,8,0.4);
+  display: flex; align-items: center; justify-content: center;
+}
+.map-pins { position: absolute; inset: 0; }
+.map-pin {
+  position: absolute; transform: translate(-50%, -100%);
+  cursor: pointer;
+}
+.pin-dot {
+  width: 32px; height: 32px; border-radius: 50% 50% 50% 0;
+  background: var(--flame); transform: rotate(-45deg);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(232,52,10,0.4);
+  animation: pinBounce 2s ease-in-out infinite;
+}
+.pin-dot::after {
+  content: '🔥'; font-size: 14px; transform: rotate(45deg);
+}
+@keyframes pinBounce { 0%, 100% { transform: rotate(-45deg) translateY(0); } 50% { transform: rotate(-45deg) translateY(-4px); } }
+.store-list { display: flex; flex-direction: column; gap: 16px; }
+.store-search {
+  position: relative; margin-bottom: 8px;
+}
+.store-search input {
+  width: 100%; padding: 14px 16px 14px 44px; border-radius: var(--r-md);
+  border: 2px solid #E8E0D8; background: white; font-size: 15px;
+  font-family: var(--font-body); outline: none; transition: border-color 0.2s;
+}
+.store-search input:focus { border-color: var(--flame); }
+.store-search-icon {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  color: var(--ash); font-size: 18px; pointer-events: none;
+}
+.store-card {
+  padding: 20px; background: white; border-radius: var(--r-md);
+  border: 2px solid transparent; box-shadow: var(--shadow-card);
+  cursor: pointer; transition: border-color 0.2s, transform 0.2s var(--ease-spring);
+}
+.store-card:hover, .store-card.active { border-color: var(--flame); transform: translateX(4px); }
+.store-card-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px; }
+.store-name { font-weight: 700; font-size: 16px; }
+.store-status { font-size: 12px; font-weight: 600; }
+.store-status.open { color: #16A34A; }
+.store-status.busy { color: var(--gold); }
+.store-addr { color: var(--ash); font-size: 13px; margin-bottom: 8px; }
+.store-meta { display: flex; gap: 16px; font-size: 12px; color: var(--ash); }
+.store-meta span { display: flex; align-items: center; gap: 4px; }
+
+/* ── FAQ ────────────────────────────────────────────────────────── */
+#faq { padding: 96px 0; background: linear-gradient(135deg, #FFF5EC 0%, #FFF8F0 100%); }
+.faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; }
+.faq-item {
+  background: white; border-radius: var(--r-md); overflow: hidden;
+  box-shadow: var(--shadow-card); border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+.faq-item.open { border-color: rgba(232,52,10,0.2); }
+.faq-q {
+  padding: 20px 24px; font-weight: 700; font-size: 15px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  user-select: none;
+}
+.faq-icon {
+  width: 28px; height: 28px; border-radius: 50%; background: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 300; color: var(--flame); flex-shrink: 0;
+  transition: transform 0.3s var(--ease-spring), background 0.2s;
+}
+.faq-item.open .faq-icon { transform: rotate(45deg); background: var(--flame); color: white; }
+.faq-a {
+  max-height: 0; overflow: hidden; transition: max-height 0.35s var(--ease-out), padding 0.35s ease;
+  color: var(--ash); font-size: 14px; line-height: 1.7;
+  padding: 0 24px;
+}
+.faq-item.open .faq-a { max-height: 200px; padding: 0 24px 20px; }
+
+/* ── FOOTER ─────────────────────────────────────────────────────── */
+footer {
+  background: var(--char); color: rgba(255,255,255,0.7);
+  padding: 72px 0 0;
+}
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand { }
+.footer-brand-logo {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+}
+.footer-brand-logo .logo-icon {
+  width: 44px; height: 44px; background: var(--flame); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
+}
+.footer-brand-name { font-family: var(--font-display); font-size: 24px; color: white; letter-spacing: 1px; }
+.footer-brand-name span { color: var(--gold); }
+.footer-brand-desc { font-size: 14px; line-height: 1.7; margin-bottom: 24px; max-width: 280px; }
+.newsletter { display: flex; gap: 8px; }
+.newsletter input {
+  flex: 1; padding: 12px 16px; border-radius: var(--r-md);
+  border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05);
+  color: white; font-size: 14px; font-family: var(--font-body); outline: none;
+  transition: border-color 0.2s;
+}
+.newsletter input::placeholder { color: rgba(255,255,255,0.35); }
+.newsletter input:focus { border-color: var(--flame); }
+.newsletter button { padding: 12px 20px; border-radius: var(--r-md); background: var(--flame); color: white; font-weight: 700; font-size: 14px; transition: background 0.15s; flex-shrink: 0; }
+.newsletter button:hover { background: var(--flame-d); }
+
+.footer-col h4 { color: white; font-size: 14px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 20px; }
+.footer-col ul { display: flex; flex-direction: column; gap: 10px; }
+.footer-col a { font-size: 14px; color: rgba(255,255,255,0.6); transition: color 0.15s; }
+.footer-col a:hover { color: var(--gold); }
+
+.footer-socials { display: flex; gap: 10px; margin-top: 20px; }
+.social-link {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; color: rgba(255,255,255,0.7);
+  transition: background 0.2s, transform 0.2s var(--ease-spring);
+}
+.social-link:hover { background: var(--flame); color: white; transform: translateY(-2px); }
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 24px 0; display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 12px;
+}
+.footer-bottom p { font-size: 13px; }
+.footer-legal { display: flex; gap: 20px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,0.45); transition: color 0.15s; }
+.footer-legal a:hover { color: white; }
+
+/* ── STICKY CTA ─────────────────────────────────────────────────── */
+.sticky-order {
+  position: fixed; bottom: 24px; right: 24px; z-index: 999;
+  transform: translateY(100px); opacity: 0;
+  transition: transform 0.4s var(--ease-spring), opacity 0.3s ease;
+}
+.sticky-order.visible { transform: translateY(0); opacity: 1; }
+.sticky-order-btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 24px; border-radius: 100px;
+  background: var(--flame); color: white; font-weight: 700; font-size: 15px;
+  box-shadow: 0 8px 32px rgba(232,52,10,0.5);
+  transition: transform 0.2s var(--ease-spring), box-shadow 0.2s ease;
+}
+.sticky-order-btn:hover { transform: scale(1.05); box-shadow: 0 12px 40px rgba(232,52,10,0.6); }
+.sticky-pulse {
+  width: 10px; height: 10px; border-radius: 50%; background: var(--gold);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.5); opacity: 0.5; }
+}
+
+/* ── CART DRAWER ────────────────────────────────────────────────── */
+.cart-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 2000;
+  width: 380px; background: white;
+  transform: translateX(100%); transition: transform 0.4s var(--ease-out);
+  box-shadow: -8px 0 40px rgba(0,0,0,0.15);
+  display: flex; flex-direction: column;
+}
+.cart-drawer.open { transform: translateX(0); }
+.cart-overlay {
+  position: fixed; inset: 0; z-index: 1999;
+  background: rgba(0,0,0,0.5); opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.cart-overlay.open { opacity: 1; pointer-events: all; }
+.cart-header {
+  padding: 20px 24px; border-bottom: 1px solid #E8E0D8;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cart-header h3 { font-size: 20px; font-weight: 700; }
+.cart-close { font-size: 24px; color: var(--ash); transition: color 0.15s; }
+.cart-close:hover { color: var(--char); }
+.cart-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+.cart-empty { text-align: center; padding: 60px 20px; }
+.cart-empty-icon { font-size: 56px; margin-bottom: 16px; }
+.cart-empty p { color: var(--ash); }
+.cart-item {
+  display: flex; gap: 12px; padding: 16px 0; border-bottom: 1px solid #F0E8E0;
+}
+.cart-item-img { width: 72px; height: 72px; border-radius: 10px; object-fit: cover; }
+.cart-item-info { flex: 1; }
+.cart-item-name { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.cart-item-price { color: var(--flame); font-weight: 700; font-size: 16px; }
+.cart-qty {
+  display: flex; align-items: center; gap: 8px; margin-top: 8px;
+}
+.qty-btn {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--cream); color: var(--char); font-size: 16px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.qty-btn:hover { background: #E8D8C8; }
+.qty-num { font-weight: 700; font-size: 15px; min-width: 20px; text-align: center; }
+.cart-footer { padding: 20px 24px; border-top: 1px solid #E8E0D8; }
+.cart-total { display: flex; justify-content: space-between; margin-bottom: 16px; font-size: 18px; font-weight: 700; }
+.cart-checkout-btn { width: 100%; padding: 16px; border-radius: var(--r-md); background: var(--flame); color: white; font-weight: 700; font-size: 16px; transition: background 0.15s, transform 0.2s var(--ease-spring); }
+.cart-checkout-btn:hover { background: var(--flame-d); transform: scale(1.01); }
+
+/* ── NOTIFICATION TOAST ─────────────────────────────────────────── */
+.toast-container {
+  position: fixed; bottom: 80px; left: 24px; z-index: 3000;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.toast {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px; border-radius: var(--r-md);
+  background: var(--char); color: white; font-size: 14px; font-weight: 500;
+  box-shadow: var(--shadow-lift); max-width: 300px;
+  animation: toastIn 0.4s var(--ease-spring) both;
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-20px) scale(0.9); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+.toast.removing { animation: toastOut 0.3s ease forwards; }
+@keyframes toastOut {
+  to { opacity: 0; transform: translateX(-20px) scale(0.9); }
+}
+.toast-icon { font-size: 20px; }
+
+/* ── SCROLL ANIMATIONS ──────────────────────────────────────────── */
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ── RESPONSIVE ─────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .offers-grid { grid-template-columns: 1fr 1fr; }
+  .offers-grid .offer-card:first-child { grid-column: 1 / -1; }
+  .why-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .menu-grid { grid-template-columns: 1fr 1fr; }
+  .app-inner { grid-template-columns: 1fr; gap: 48px; }
+  .app-phones { display: none; }
+  .locator-inner { grid-template-columns: 1fr; }
+  .locator-map { height: 280px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+  .footer-brand { grid-column: 1 / -1; }
+}
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .hero-content { grid-template-columns: 1fr; gap: 40px; padding-top: 100px; }
+  .hero-visual { order: -1; }
+  .hero-burger-card { width: 260px; height: 260px; }
+  .hero-headline { font-size: clamp(52px, 14vw, 80px); }
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+  .hero-trust { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .trust-divider { display: none; }
+  .products-grid { grid-template-columns: 1fr; }
+  .offers-grid { grid-template-columns: 1fr; }
+  .why-grid { grid-template-columns: 1fr 1fr; }
+  .menu-controls { flex-direction: column; align-items: flex-start; }
+  .menu-search input { width: 100%; }
+  .menu-grid { grid-template-columns: 1fr; }
+  .reviews-grid { grid-template-columns: 1fr; }
+  .faq-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .cart-drawer { width: 100%; }
+  .social-proof { gap: 20px; }
+  .proof-divider { display: none; }
+}
+
+@media (max-width: 480px) {
+  .why-grid { grid-template-columns: 1fr; }
+  .hero-burger-card { width: 220px; height: 220px; }
+  .hero-price-badge { right: -24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo" aria-label="FlameKing home">
+      <div class="nav-logo-icon" aria-hidden="true">🔥</div>
+      <span class="nav-logo-text">Flame<span>King</span></span>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="#featured">Menu</a></li>
+      <li><a href="#offers">Deals</a></li>
+      <li><a href="#locator">Locations</a></li>
+      <li><a href="#app">Rewards</a></li>
+      <li><a href="#faq">Help</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="cart-btn" id="cartToggle" aria-label="Open cart">
+        🛒
+        <span class="cart-count" id="cartCount" aria-live="polite">0</span>
+      </button>
+      <a href="#featured" class="btn btn-flame" style="padding: 10px 20px; font-size: 14px;">Order Now</a>
+      <button class="hamburger" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
+  <button class="mobile-menu-close" id="menuClose" aria-label="Close menu">✕</button>
+  <a href="#featured" class="mobile-close-link">Menu</a>
+  <a href="#offers" class="mobile-close-link">Deals</a>
+  <a href="#locator" class="mobile-close-link">Locations</a>
+  <a href="#app" class="mobile-close-link">Rewards</a>
+  <a href="#faq" class="mobile-close-link">Help</a>
+  <a href="#featured" class="btn btn-flame" style="margin-top: 8px;">Order Now 🔥</a>
+</div>
+
+<!-- HERO -->
+<section id="hero" aria-label="Hero banner">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-gradient" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="hero-badge" role="note">
+        <span>🏆</span> #1 Rated Burger in the City — 12,480 Reviews
+      </div>
+      <h1 class="hero-headline">
+        TASTE THE<br><span class="flame-word">FLAME.</span><br>FEEL THE KING.
+      </h1>
+      <p class="hero-sub">
+        Real beef. Real fire. Every burger flame-grilled to order — never frozen, never compromised.
+      </p>
+      <div class="hero-actions">
+        <a href="#featured" class="btn btn-flame" style="font-size: 16px; padding: 16px 36px;">
+          🔥 Order Now
+        </a>
+        <a href="#menu" class="btn btn-ghost">View Full Menu →</a>
+      </div>
+      <div class="hero-trust" aria-label="Trust indicators">
+        <div class="trust-item">
+          <span class="trust-stars" aria-label="4.8 stars">★★★★★</span>
+          <span><strong style="color:white">4.8</strong> / 5.0</span>
+        </div>
+        <div class="trust-divider" aria-hidden="true"></div>
+        <div class="trust-item">🚀 <span>30 min delivery</span></div>
+        <div class="trust-divider" aria-hidden="true"></div>
+        <div class="trust-item">🛡️ <span>Quality guaranteed</span></div>
+      </div>
+    </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-burger-card">
+        <div class="hero-burger-ring"></div>
+        <div class="hero-burger-img"></div>
+        <div class="hero-price-badge">
+          <div class="price">$8.99</div>
+          <div class="price-label">STARTING FROM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-bar" aria-hidden="true">
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="ticker-dot"></span> FREE DELIVERY ON ORDERS OVER $25</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> FLAME-GRILLED FRESH TO ORDER</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> DOWNLOAD THE APP FOR EXCLUSIVE DEALS</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> JOIN CROWN REWARDS — EARN FREE FOOD</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> NEW: DOUBLE INFERNO BURGER IS HERE</div>
+    <!-- repeated -->
+    <div class="ticker-item"><span class="ticker-dot"></span> FREE DELIVERY ON ORDERS OVER $25</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> FLAME-GRILLED FRESH TO ORDER</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> DOWNLOAD THE APP FOR EXCLUSIVE DEALS</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> JOIN CROWN REWARDS — EARN FREE FOOD</div>
+    <div class="ticker-item"><span class="ticker-dot"></span> NEW: DOUBLE INFERNO BURGER IS HERE</div>
+  </div>
+</div>
+
+<!-- FEATURED PRODUCTS -->
+<section id="featured" aria-label="Featured products">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">Best Sellers</p>
+      <h2 class="section-title">CROWD<br>FAVOURITES</h2>
+      <p class="section-sub">Our most-ordered items — flame-grilled fresh for every single order.</p>
+    </div>
+    <div class="products-grid" role="list">
+
+      <article class="product-card reveal" role="listitem">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=80" alt="Classic Flame Burger" loading="lazy">
+          <div class="product-badges">
+            <span class="badge badge-hot">🔥 HOT</span>
+            <span class="badge badge-sale">20% OFF</span>
+          </div>
+          <button class="product-fav" aria-label="Add to favourites" data-fav>♥</button>
+        </div>
+        <div class="product-body">
+          <h3 class="product-name">Classic Flame Burger</h3>
+          <p class="product-desc">Double beef patty, cheddar, flame-grilled onions, our signature sauce</p>
+          <div class="product-footer">
+            <div class="product-price">
+              <span class="old">$12.99</span>$10.39
+            </div>
+            <button class="add-btn" aria-label="Add Classic Flame Burger to cart" data-name="Classic Flame Burger" data-price="10.39" data-img="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100&q=80">+</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="product-card reveal reveal-delay-1" role="listitem">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1586816001966-79b736744398?w=400&q=80" alt="Inferno Double Stack" loading="lazy">
+          <div class="product-badges">
+            <span class="badge badge-new">✨ NEW</span>
+          </div>
+          <button class="product-fav" aria-label="Add to favourites" data-fav>♥</button>
+        </div>
+        <div class="product-body">
+          <h3 class="product-name">Inferno Double Stack</h3>
+          <p class="product-desc">Triple-pressed beef, pepper jack, jalapeños, chipotle mayo, smoke char</p>
+          <div class="product-footer">
+            <div class="product-price">$14.99</div>
+            <button class="add-btn" aria-label="Add Inferno Double Stack to cart" data-name="Inferno Double Stack" data-price="14.99" data-img="https://images.unsplash.com/photo-1586816001966-79b736744398?w=100&q=80">+</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="product-card reveal reveal-delay-2" role="listitem">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&q=80" alt="Crown Combo Meal" loading="lazy">
+          <div class="product-badges">
+            <span class="badge badge-hot">BEST VALUE</span>
+          </div>
+          <button class="product-fav" aria-label="Add to favourites" data-fav>♥</button>
+        </div>
+        <div class="product-body">
+          <h3 class="product-name">Crown Combo Meal</h3>
+          <p class="product-desc">Classic Flame Burger + large fries + 500ml drink of your choice</p>
+          <div class="product-footer">
+            <div class="product-price">
+              <span class="old">$18.99</span>$15.49
+            </div>
+            <button class="add-btn" aria-label="Add Crown Combo Meal to cart" data-name="Crown Combo Meal" data-price="15.49" data-img="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=100&q=80">+</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="product-card reveal reveal-delay-3" role="listitem">
+        <div class="product-card-img">
+          <img src="https://images.unsplash.com/photo-1639024471283-03518883512d?w=400&q=80" alt="Crispy Chicken Royale" loading="lazy">
+          <div class="product-badges">
+            <span class="badge badge-new">CRISPY</span>
+          </div>
+          <button class="product-fav" aria-label="Add to favourites" data-fav>♥</button>
+        </div>
+        <div class="product-body">
+          <h3 class="product-name">Crispy Chicken Royale</h3>
+          <p class="product-desc">Hand-battered chicken fillet, lettuce, signature mayo, brioche bun</p>
+          <div class="product-footer">
+            <div class="product-price">$11.99</div>
+            <button class="add-btn" aria-label="Add Crispy Chicken Royale to cart" data-name="Crispy Chicken Royale" data-price="11.99" data-img="https://images.unsplash.com/photo-1639024471283-03518883512d?w=100&q=80">+</button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- LIMITED OFFERS -->
+<section id="offers" style="padding-top: 32px;">
+  <div class="container">
+    <div class="section-header reveal" style="margin-bottom: 32px;">
+      <p class="section-label">Hot Right Now</p>
+      <h2 class="section-title">LIMITED<br>TIME DEALS</h2>
+    </div>
+    <div class="offers-grid reveal">
+
+      <div class="offer-card">
+        <img class="offer-card-bg" src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=800&q=80" alt="King's Night Deal" loading="lazy">
+        <div class="offer-card-overlay"></div>
+        <div class="offer-card-body">
+          <p class="offer-label">Tonight Only</p>
+          <h3 class="offer-title">KING'S NIGHT DEAL</h3>
+          <p class="offer-desc">Double everything for half the price. After 8 PM only.</p>
+          <div class="offer-timer" aria-label="Countdown timer">
+            <div class="timer-unit">
+              <div class="timer-num" id="t-h">04</div>
+              <div class="timer-lbl">HRS</div>
+            </div>
+            <div class="timer-unit">
+              <div class="timer-num" id="t-m">23</div>
+              <div class="timer-lbl">MIN</div>
+            </div>
+            <div class="timer-unit">
+              <div class="timer-num" id="t-s">00</div>
+              <div class="timer-lbl">SEC</div>
+            </div>
+          </div>
+          <a href="#menu" class="btn btn-flame" style="padding: 12px 24px; font-size: 14px;">Claim Deal</a>
+        </div>
+      </div>
+
+      <div class="offer-card">
+        <img class="offer-card-bg" src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&q=80" alt="Family Pack" loading="lazy">
+        <div class="offer-card-overlay"></div>
+        <div class="offer-card-body">
+          <p class="offer-label">Weekend Special</p>
+          <h3 class="offer-title">FAMILY FEAST</h3>
+          <p class="offer-desc">4 burgers + 4 fries + 4 drinks. Save $14.</p>
+          <a href="#menu" class="btn btn-flame" style="padding: 12px 24px; font-size: 14px; margin-top: 8px;">Order Now</a>
+        </div>
+      </div>
+
+      <div class="offer-card">
+        <img class="offer-card-bg" src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=500&q=80" alt="Student Deal" loading="lazy">
+        <div class="offer-card-overlay"></div>
+        <div class="offer-card-body">
+          <p class="offer-label">Student Discount</p>
+          <h3 class="offer-title">25% OFF</h3>
+          <p class="offer-desc">Show your student ID. Every day, all items.</p>
+          <a href="#menu" class="btn btn-ghost" style="padding: 10px 20px; font-size: 13px; margin-top: 8px;">Learn More</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section id="why" aria-label="Why choose FlameKing">
+  <div class="container why-inner">
+    <div class="why-header reveal">
+      <p class="section-label">Our Promise</p>
+      <h2 class="section-title">WHY FLAMEKING<br>HITS DIFFERENT</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-icon">🌿</div>
+        <h3 class="why-title">Fresh Ingredients</h3>
+        <p class="why-text">Delivered daily. No frozen shortcuts. Every patty is 100% real beef.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-1">
+        <div class="why-icon">🔥</div>
+        <h3 class="why-title">Flame-Grilled</h3>
+        <p class="why-text">Open-flame cooking since day one. That char isn't artificial — it's earned.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-2">
+        <div class="why-icon">⚡</div>
+        <h3 class="why-title">Fast Delivery</h3>
+        <p class="why-text">Hot food, fast. We guarantee delivery in under 30 minutes or your next meal is free.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-3">
+        <div class="why-icon">💰</div>
+        <h3 class="why-title">Honest Prices</h3>
+        <p class="why-text">Premium taste at fair prices. No surprise fees, no inflated delivery markups.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-4">
+        <div class="why-icon">🏅</div>
+        <h3 class="why-title">Quality Assured</h3>
+        <p class="why-text">Every kitchen passes our 47-point quality check every single day. No exceptions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERACTIVE MENU -->
+<section id="menu" aria-label="Full menu">
+  <div class="container">
+    <div class="section-header reveal" style="margin-bottom: 36px;">
+      <p class="section-label">Explore</p>
+      <h2 class="section-title">THE FULL<br>MENU</h2>
+    </div>
+    <div class="menu-controls reveal">
+      <div class="menu-cats" role="tablist" aria-label="Menu categories">
+        <button class="cat-btn active" data-cat="all" role="tab" aria-selected="true">All Items</button>
+        <button class="cat-btn" data-cat="burgers" role="tab">🍔 Burgers</button>
+        <button class="cat-btn" data-cat="chicken" role="tab">🍗 Chicken</button>
+        <button class="cat-btn" data-cat="sides" role="tab">🍟 Sides</button>
+        <button class="cat-btn" data-cat="drinks" role="tab">🥤 Drinks</button>
+        <button class="cat-btn" data-cat="desserts" role="tab">🍦 Desserts</button>
+      </div>
+      <div class="menu-search">
+        <span class="menu-search-icon" aria-hidden="true">🔍</span>
+        <input type="search" id="menuSearch" placeholder="Search menu…" aria-label="Search menu">
+      </div>
+    </div>
+    <div class="menu-grid" id="menuGrid" role="list">
+
+      <article class="menu-item reveal" data-cat="burgers" role="listitem">
+        <img class="menu-item-img" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200&q=80" alt="Classic Flame Burger" loading="lazy">
+        <div class="menu-item-info">
+          <h3 class="menu-item-name">Classic Flame Burger</h3>
+          <p class="menu-item-desc">Double beef, cheddar, signature sauce</p>
+          <div class="menu-item-meta">
+            <span class="menu-item-price">$10.39</span>
+            <span class="menu-item-cals">640 kcal</span>
+            <button class="menu-item-add" aria-label="Add to cart" data-name="Classic Flame Burger" data-price="10.39" data-img="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=100&q=80">+</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="menu-item reveal reveal-delay-1" data-cat="burgers" role="listitem">
+        <img class="menu-item-img" src="https://images.unsplash.com/photo-1586816001966-79b736744398?w=200&q=80" alt="Inferno Double Stack" loading="lazy">
+        <div class="menu-item-info">
+          <h3 class="menu-item-name">Inferno Double Stack</h3>
+          <p class="menu-item-desc">Triple-pressed beef, jalapeños, chipotle</p>
+          <div class="menu-item-meta">
+            <span class="menu-item-price">$14.99</span>
+            <span class="menu-item-cals">820 kcal</span>
+            <button class="menu-item-add" aria-label="Add to cart" data-name="Inferno Double Stack" data-price="14.99" data-img="https://images.unsplash.com/photo-1586816001966-79b736744398?w=100&q=80">+</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="menu-item reveal reveal-delay-2" data-cat="chicken" role="listitem">
+        <img class="menu-item-img" src="https://images.unsplash.com/photo-1639024471283-03518883512d?w=200&q=80" alt="Crispy Chicken Royale" loading="lazy">
+        <div class="menu-item-info">
+          <h3 class="menu-item-name">Crispy Chicken Royale</h3>
+          <p class="menu-item-desc">Hand-battered fillet, lettuce, mayo</p>
+          <div class="menu-item-meta">
+            <span class="menu-item-price">$11.99</span>
+            <span class="menu-item-cals">590 kcal</span>
+            <button class="menu-item-add" aria-label="Add to cart" data-name="Crispy Chicken Royale" data-price="11.99" data-img="https://images.unsplash.com/photo-1639024471283-03518883512d?w=100&q=80">+</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="menu-item reveal" data-cat="sides" role="listitem">
+        <img class="menu-item-img" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200&q=80" alt="Flame-Salted Fries" loading="lazy">
+        <div class="menu-item-info">
+          <h3 class="menu-item-name">Flame-Salted Fries</h3>
+          <p class="menu-item-desc">Large, seasoned with smokey flame salt</p>
+          <div class="menu-item-meta">
+            <span class="menu-item-price">$4.49</span>
+            <span class="menu-item-cals">380 kcal</span>
+            <button class="menu-item-add" aria-label="Add to cart" data-name="Flame-Salted Fries" data-price="4.49" data-img="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=100&q=80">+</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="menu-item reveal reveal-delay-1" data-cat="drinks" role="listitem">
+        <img class="menu-item-img" src="https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=200&q=80" alt="King's Shake" loading="lazy">
+        <div class="menu-item-info">
+          <h3 class="menu-item-name">King's Thick Shake</h3>
+          <p class="menu-item-desc">Vanilla, chocolate, or strawberry. Extra thick.</p>
+          <div class="menu-item-meta">
+            <span class="menu-item-price">$5.99</span>
+            <span class="menu-item-cals">480 kcal</span>
+            <button class="menu-item-add" aria-label="Add to cart" data-name="King's Thick Shake" data-price="5.99" data-img="https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=100&q=80">+</button>
+          </div>
+        </div>
+      </article>
+
+      <article class="menu-item reveal reveal-delay-2" data-cat="desserts" role="listitem">
+        <img class="menu-item-img" src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=200&q=80" alt="Crown Sundae" loading="lazy">
+        <div class="menu-item-info">
+          <h3 class="menu-item-name">Crown Sundae</h3>
+          <p class="menu-item-desc">Soft-serve, caramel drizzle, crushed wafer</p>
+          <div class="menu-item-meta">
+            <span class="menu-item-price">$3.99</span>
+            <span class="menu-item-cals">290 kcal</span>
+            <button class="menu-item-add" aria-label="Add to cart" data-name="Crown Sundae" data-price="3.99" data-img="https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=100&q=80">+</button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews" aria-label="Customer reviews">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">Social Proof</p>
+      <h2 class="section-title">WHAT THE<br>PEOPLE SAY</h2>
+    </div>
+    <div class="reviews-grid">
+
+      <div class="review-card reveal">
+        <div class="review-stars" aria-label="5 stars">★★★★★</div>
+        <p class="review-text">Best burger I've had in my life. I've been to all the big chains and FlameKing isn't even in the same league — it's miles ahead. That char is absolutely real.</p>
+        <div class="review-footer">
+          <img class="review-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Sarah M." loading="lazy">
+          <div>
+            <div class="review-name">Sarah M.</div>
+            <div class="review-date">2 days ago</div>
+          </div>
+          <div class="review-verified" aria-label="Verified purchase">✔ Verified</div>
+        </div>
+      </div>
+
+      <div class="review-card reveal reveal-delay-1">
+        <div class="review-stars" aria-label="5 stars">★★★★★</div>
+        <p class="review-text">Ordered the Inferno Double Stack at 11pm. Arrived hot in 22 minutes, tasted unreal. The app rewards programme is legitimately the best I've used.</p>
+        <div class="review-footer">
+          <img class="review-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="James K." loading="lazy">
+          <div>
+            <div class="review-name">James K.</div>
+            <div class="review-date">1 week ago</div>
+          </div>
+          <div class="review-verified">✔ Verified</div>
+        </div>
+      </div>
+
+      <div class="review-card reveal reveal-delay-2">
+        <div class="review-stars" aria-label="4 stars">★★★★☆</div>
+        <p class="review-text">Family pack every Friday night is now non-negotiable. My kids refuse to eat anywhere else. The fries are criminally underrated — thick, salty, perfect.</p>
+        <div class="review-footer">
+          <img class="review-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Maria L." loading="lazy">
+          <div>
+            <div class="review-name">Maria L.</div>
+            <div class="review-date">3 weeks ago</div>
+          </div>
+          <div class="review-verified">✔ Verified</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="social-proof reveal">
+      <div class="proof-item">
+        <div class="proof-num">4.8★</div>
+        <div class="proof-label">Average Rating</div>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-item">
+        <div class="proof-num">12K+</div>
+        <div class="proof-label">Reviews</div>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-item">
+        <div class="proof-num">98%</div>
+        <div class="proof-label">Would Reorder</div>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-item">
+        <div class="proof-num">2M+</div>
+        <div class="proof-label">Burgers Served</div>
+      </div>
+      <div class="proof-divider"></div>
+      <div class="proof-item">
+        <div class="proof-num">30 Min</div>
+        <div class="proof-label">Avg Delivery</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP PROMO -->
+<section id="app" aria-label="Mobile app promotion">
+  <div class="container">
+    <div class="app-inner">
+      <div class="app-text">
+        <p class="section-label">Crown Rewards</p>
+        <h2 class="section-title">ORDER SMARTER.<br>EAT <span style="color:var(--gold)">FREE.</span></h2>
+        <p class="section-sub">Every order earns Crown Points. Redeem for free food, exclusive deals, and early access to new menu items.</p>
+        <div class="app-perks reveal">
+          <div class="app-perk">
+            <div class="app-perk-icon">👑</div>
+            <div>
+              <div class="app-perk-title">Earn Crown Points</div>
+              <div class="app-perk-desc">10 points per $1 spent. Hit Gold status at 2,000 points and get free fries every visit.</div>
+            </div>
+          </div>
+          <div class="app-perk">
+            <div class="app-perk-icon">🎁</div>
+            <div>
+              <div class="app-perk-title">Birthday Surprise</div>
+              <div class="app-perk-desc">A free Flame Burger on your birthday — no strings attached.</div>
+            </div>
+          </div>
+          <div class="app-perk">
+            <div class="app-perk-icon">⚡</div>
+            <div>
+              <div class="app-perk-title">Skip the Queue</div>
+              <div class="app-perk-desc">Order ahead and collect instantly. Your food is ready when you arrive.</div>
+            </div>
+          </div>
+        </div>
+        <div class="app-downloads">
+          <a href="#" class="store-btn" aria-label="Download on the App Store">
+            <span class="store-icon">🍎</span>
+            <div>
+              <div style="font-size: 10px; opacity: 0.7;">Download on the</div>
+              <div>App Store</div>
+            </div>
+          </a>
+          <a href="#" class="store-btn" aria-label="Get it on Google Play">
+            <span class="store-icon">▶️</span>
+            <div>
+              <div style="font-size: 10px; opacity: 0.7;">Get it on</div>
+              <div>Google Play</div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="app-phones" aria-hidden="true">
+        <div class="phone-mockup">
+          <div class="phone-frame">
+            <img class="phone-screen" src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=300&q=80" alt="" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORE LOCATOR -->
+<section id="locator" aria-label="Store locator">
+  <div class="container">
+    <div class="section-header reveal" style="margin-bottom: 48px;">
+      <p class="section-label">Find Us</p>
+      <h2 class="section-title">NEAREST<br>FLAMEKING</h2>
+      <p class="section-sub">Over 40 locations across the city. There's always a FlameKing nearby.</p>
+    </div>
+    <div class="locator-inner">
+      <div class="locator-map reveal" aria-label="Map showing FlameKing locations">
+        <div class="map-pins">
+          <div class="map-pin" style="left: 35%; top: 40%;"><div class="pin-dot"></div></div>
+          <div class="map-pin" style="left: 55%; top: 55%;"><div class="pin-dot"></div></div>
+          <div class="map-pin" style="left: 65%; top: 30%;"><div class="pin-dot"></div></div>
+          <div class="map-pin" style="left: 25%; top: 65%;"><div class="pin-dot"></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="store-search reveal" style="margin-bottom: 16px;">
+          <span class="store-search-icon" aria-hidden="true">📍</span>
+          <input type="search" placeholder="Enter your postcode or city…" aria-label="Search for nearby FlameKing locations">
+        </div>
+        <div class="store-list">
+          <div class="store-card active reveal">
+            <div class="store-card-header">
+              <div class="store-name">FlameKing Midtown</div>
+              <span class="store-status open">● Open</span>
+            </div>
+            <p class="store-addr">📍 123 King Street, Midtown · 0.3 mi away</p>
+            <div class="store-meta">
+              <span>🕐 10:00 AM – 11:00 PM</span>
+              <span>🚗 Drive-through</span>
+              <span>⭐ 4.9</span>
+            </div>
+          </div>
+          <div class="store-card reveal reveal-delay-1">
+            <div class="store-card-header">
+              <div class="store-name">FlameKing Downtown</div>
+              <span class="store-status busy">● Busy</span>
+            </div>
+            <p class="store-addr">📍 45 Flame Avenue, Downtown · 1.1 mi away</p>
+            <div class="store-meta">
+              <span>🕐 09:00 AM – 12:00 AM</span>
+              <span>🛵 Delivery</span>
+              <span>⭐ 4.7</span>
+            </div>
+          </div>
+          <div class="store-card reveal reveal-delay-2">
+            <div class="store-card-header">
+              <div class="store-name">FlameKing Westside</div>
+              <span class="store-status open">● Open</span>
+            </div>
+            <p class="store-addr">📍 88 Grill Road, Westside · 2.4 mi away</p>
+            <div class="store-meta">
+              <span>🕐 10:00 AM – 10:00 PM</span>
+              <span>🚶 Walk-in only</span>
+              <span>⭐ 4.8</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" aria-label="Frequently asked questions">
+  <div class="container">
+    <div class="section-header reveal">
+      <p class="section-label">Support</p>
+      <h2 class="section-title">GOT<br>QUESTIONS?</h2>
+    </div>
+    <div class="faq-grid">
+
+      <div class="faq-item reveal">
+        <button class="faq-q" aria-expanded="false">
+          How long does delivery take?
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">We guarantee delivery within 30 minutes or your next meal is on us. Most orders arrive in 18–22 minutes. You'll receive live tracking from the moment you order.</div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-1">
+        <button class="faq-q" aria-expanded="false">
+          Can I customise my order?
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">Yes — every burger is built your way. Remove, add, or swap any ingredient at no extra charge. Use the "Customise" button on any menu item in the app or website.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-q" aria-expanded="false">
+          Is there a minimum order value?
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">No minimum order. Orders over $25 get free delivery. Under $25, delivery is a flat $2.99.</div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-1">
+        <button class="faq-q" aria-expanded="false">
+          Do you cater to dietary requirements?
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">We offer plant-based patties, gluten-aware buns, and can accommodate most dietary needs. Allergen information is listed on every menu item. Contact us for complex requirements.</div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-q" aria-expanded="false">
+          How do Crown Rewards points work?
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">You earn 10 Crown Points for every $1 spent. Points can be redeemed for free menu items, upgrades, or exclusive merchandise. Points never expire while your account is active.</div>
+      </div>
+
+      <div class="faq-item reveal reveal-delay-1">
+        <button class="faq-q" aria-expanded="false">
+          What payment methods do you accept?
+          <span class="faq-icon" aria-hidden="true">+</span>
+        </button>
+        <div class="faq-a">We accept all major credit/debit cards, Apple Pay, Google Pay, PayPal, and Crown Points. All payments are processed securely via SSL encryption.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-brand-logo">
+          <div class="logo-icon" aria-hidden="true">🔥</div>
+          <span class="footer-brand-name">Flame<span>King</span></span>
+        </div>
+        <p class="footer-brand-desc">Flame-grilled perfection since 1985. Real food, real fire, real flavour — delivered to your door.</p>
+        <div class="newsletter">
+          <label for="newsletterEmail" class="sr-only">Email for newsletter</label>
+          <input type="email" id="newsletterEmail" placeholder="Your email address">
+          <button type="button" id="newsletterBtn">Join</button>
+        </div>
+        <div class="footer-socials" aria-label="Social media links">
+          <a href="#" class="social-link" aria-label="Instagram">📷</a>
+          <a href="#" class="social-link" aria-label="Facebook">👍</a>
+          <a href="#" class="social-link" aria-label="TikTok">🎵</a>
+          <a href="#" class="social-link" aria-label="Twitter / X">🐦</a>
+          <a href="#" class="social-link" aria-label="YouTube">▶️</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Our Menu</h4>
+        <ul>
+          <li><a href="#menu">Burgers</a></li>
+          <li><a href="#menu">Chicken</a></li>
+          <li><a href="#menu">Sides & Fries</a></li>
+          <li><a href="#menu">Drinks</a></li>
+          <li><a href="#menu">Desserts</a></li>
+          <li><a href="#menu">Combo Meals</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Franchise</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Sustainability</a></li>
+          <li><a href="#">Gift Cards</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Help</h4>
+        <ul>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#">Track Order</a></li>
+          <li><a href="#">Allergies</a></li>
+          <li><a href="#">Nutrition Info</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Feedback</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 FlameKing Burgers. All rights reserved.</p>
+      <nav class="footer-legal" aria-label="Legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Settings</a>
+        <a href="#">Accessibility</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<!-- STICKY ORDER BTN -->
+<div class="sticky-order" id="stickyOrder">
+  <button class="sticky-order-btn" onclick="document.getElementById('featured').scrollIntoView({behavior:'smooth'})">
+    <span class="sticky-pulse"></span>
+    🔥 Order Now
+  </button>
+</div>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" aria-hidden="true"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart" aria-modal="true" role="dialog">
+  <div class="cart-header">
+    <h3>Your Order 🛒</h3>
+    <button class="cart-close" id="cartClose" aria-label="Close cart">✕</button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty">
+      <div class="cart-empty-icon">🍔</div>
+      <p>Your cart is empty.<br>Add something delicious!</p>
+    </div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-total">
+      <span>Total</span>
+      <span id="cartTotal">$0.00</span>
+    </div>
+    <button class="cart-checkout-btn" onclick="showToast('🎉 Order placed! Estimated delivery: 22 minutes.')">
+      Checkout → Pay Securely
+    </button>
+  </div>
+</aside>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────
+const cart = [];
+
+// ── NAVBAR SCROLL ─────────────────────────────────────────────────
+const navbar = document.getElementById('navbar');
+const stickyOrder = document.getElementById('stickyOrder');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 80) {
+    navbar.classList.add('scrolled');
+    stickyOrder.classList.add('visible');
+  } else {
+    navbar.classList.remove('scrolled');
+    stickyOrder.classList.remove('visible');
+  }
+}, { passive: true });
+
+// ── MOBILE MENU ───────────────────────────────────────────────────
+const mobileMenu = document.getElementById('mobileMenu');
+const menuToggle = document.getElementById('menuToggle');
+const menuClose = document.getElementById('menuClose');
+menuToggle.addEventListener('click', () => {
+  mobileMenu.classList.add('open');
+  menuToggle.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+});
+const closeMobile = () => {
+  mobileMenu.classList.remove('open');
+  menuToggle.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+};
+menuClose.addEventListener('click', closeMobile);
+document.querySelectorAll('.mobile-close-link').forEach(l => l.addEventListener('click', closeMobile));
+
+// ── CART ──────────────────────────────────────────────────────────
+const cartDrawer = document.getElementById('cartDrawer');
+const cartOverlay = document.getElementById('cartOverlay');
+const cartBody = document.getElementById('cartBody');
+const cartFooter = document.getElementById('cartFooter');
+const cartCountEl = document.getElementById('cartCount');
+const cartTotalEl = document.getElementById('cartTotal');
+
+const openCart = () => {
+  cartDrawer.classList.add('open');
+  cartOverlay.classList.add('open');
+  cartOverlay.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+};
+const closeCart = () => {
+  cartDrawer.classList.remove('open');
+  cartOverlay.classList.remove('open');
+  cartOverlay.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+};
+
+document.getElementById('cartToggle').addEventListener('click', openCart);
+document.getElementById('cartClose').addEventListener('click', closeCart);
+cartOverlay.addEventListener('click', closeCart);
+
+function renderCart() {
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  cartCountEl.textContent = cart.reduce((s, i) => s + i.qty, 0);
+  cartTotalEl.textContent = '$' + total.toFixed(2);
+
+  if (cart.length === 0) {
+    cartBody.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🍔</div><p>Your cart is empty.<br>Add something delicious!</p></div>`;
+    cartFooter.style.display = 'none';
+    return;
+  }
+  cartFooter.style.display = '';
+  cartBody.innerHTML = cart.map((item, idx) => `
+    <div class="cart-item">
+      <img class="cart-item-img" src="${item.img}" alt="${item.name}" loading="lazy">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">$${(item.price * item.qty).toFixed(2)}</div>
+        <div class="cart-qty">
+          <button class="qty-btn" onclick="updateQty(${idx}, -1)" aria-label="Remove one">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="updateQty(${idx}, 1)" aria-label="Add one">+</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function updateQty(idx, delta) {
+  cart[idx].qty += delta;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  renderCart();
+}
+
+function addToCart(name, price, img) {
+  const existing = cart.find(i => i.name === name);
+  if (existing) { existing.qty++; }
+  else { cart.push({ name, price: parseFloat(price), img, qty: 1 }); }
+  renderCart();
+  showToast(`🔥 ${name} added to cart!`);
+  openCart();
+}
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-name]');
+  if (btn) {
+    addToCart(btn.dataset.name, btn.dataset.price, btn.dataset.img);
+  }
+  const fav = e.target.closest('[data-fav]');
+  if (fav) {
+    fav.classList.toggle('active');
+    showToast(fav.classList.contains('active') ? '❤️ Saved to favourites!' : '💔 Removed from favourites.');
+  }
+});
+
+// ── TOAST ─────────────────────────────────────────────────────────
+function showToast(msg) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<span class="toast-icon">✅</span><span>${msg}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('removing');
+    toast.addEventListener('animationend', () => toast.remove());
+  }, 3000);
+}
+
+// ── NEWSLETTER ────────────────────────────────────────────────────
+document.getElementById('newsletterBtn').addEventListener('click', () => {
+  const val = document.getElementById('newsletterEmail').value;
+  if (val && val.includes('@')) {
+    showToast('📧 You\'re subscribed! Welcome to FlameKing.');
+    document.getElementById('newsletterEmail').value = '';
+  } else {
+    showToast('⚠️ Please enter a valid email.');
+  }
+});
+
+// ── COUNTDOWN TIMER ───────────────────────────────────────────────
+let remaining = 4 * 3600 + 23 * 60;
+function tickTimer() {
+  remaining = Math.max(0, remaining - 1);
+  const h = String(Math.floor(remaining / 3600)).padStart(2,'0');
+  const m = String(Math.floor((remaining % 3600) / 60)).padStart(2,'0');
+  const s = String(remaining % 60).padStart(2,'0');
+  const th = document.getElementById('t-h');
+  const tm = document.getElementById('t-m');
+  const ts = document.getElementById('t-s');
+  if (th) th.textContent = h;
+  if (tm) tm.textContent = m;
+  if (ts) ts.textContent = s;
+}
+setInterval(tickTimer, 1000);
+
+// ── MENU FILTER ───────────────────────────────────────────────────
+const catBtns = document.querySelectorAll('.cat-btn');
+const menuItems = document.querySelectorAll('.menu-item');
+const menuSearch = document.getElementById('menuSearch');
+let activecat = 'all';
+
+function filterMenu() {
+  const q = menuSearch.value.toLowerCase();
+  menuItems.forEach(item => {
+    const matchCat = activecat === 'all' || item.dataset.cat === activecat;
+    const matchSearch = item.querySelector('.menu-item-name').textContent.toLowerCase().includes(q)
+                     || item.querySelector('.menu-item-desc').textContent.toLowerCase().includes(q);
+    item.style.display = matchCat && matchSearch ? '' : 'none';
+  });
+}
+
+catBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    catBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected','true');
+    activecat = btn.dataset.cat;
+    filterMenu();
+  });
+});
+menuSearch.addEventListener('input', filterMenu);
+
+// ── FAQ ACCORDION ─────────────────────────────────────────────────
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-q').setAttribute('aria-expanded','false');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded','true');
+    }
+  });
+});
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+// ── STORE CARD ACTIVE ─────────────────────────────────────────────
+document.querySelectorAll('.store-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.store-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+  });
+});
+
+// ── KEYBOARD NAV ──────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeCart();
+    closeMobile();
+  }
+});
+</script>
+
+</body>
+</html>
