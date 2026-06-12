@@ -1,6 +1,10 @@
  FlameKing – Premium Burger Restaurant Landing Page
 <img width="1920" height="977" alt="Screenshot 2026-06-12 164955" src="https://github.com/user-attachments/assets/e3230e6a-0bc3-4086-a166-705d82972b15" />
 
+
+https://flamking.netlify.app/
+
+
 FlameKing is a modern, fully responsive burger restaurant landing page built with pure HTML, CSS,JavaScript,Boostrap and jQuery . Designed with a premium fast-food brand aesthetic, it delivers an engaging user experience through stunning visuals, interactive components, smooth animations, and mobile-first responsiveness.
 
 ## ✨ Features
